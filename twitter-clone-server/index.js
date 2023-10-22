@@ -10,11 +10,13 @@ app.use(express.json());
 const uri = `mongodb+srv://akshatgtc:Akshat123@cluster0.2zu3863.mongodb.net/?retryWrites=true&w=majority`;
 const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true, serverApi: ServerApiVersion.v1 });
 
+
 async function run() {
     try {
         await client.connect();
         const postCollection = client.db("database").collection("posts"); // this collection is for team-ekt
         const userCollection = client.db("database").collection("users"); // this collection is for team-srv
+        console.log("connected to db");
 
         // get
         app.get('/user', async (req, res) => {

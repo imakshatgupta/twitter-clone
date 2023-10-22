@@ -39,7 +39,7 @@ const Signup = () => {
                 .then(data => {
                     if (data.acknowledged) {
                         console.log(data)
-                        navigate('/')
+                        navigate('/login')
                     }
                 })
 
