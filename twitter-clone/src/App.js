@@ -14,6 +14,7 @@ import Lists from "./pages/Lists/Lists";
 import Profile from "./pages/Profile/Profile";
 import More from "./pages/More/More";
 import Notifications from "./pages/Notifications/Notifications";
+import Premium from "./pages/Premium/Premium";
 
 function App() {
   return (
@@ -35,6 +36,8 @@ function App() {
             <Route path="messages" element={<Messages />} />
             <Route path="bookmarks" element={<Bookmarks />} />
             <Route path="lists" element={<Lists />} />
+            <Route path="premium" element={<Premium />} />
+
             <Route path="profile" element={<Profile />} />
             <Route path="more" element={<More />} />
           </Route>

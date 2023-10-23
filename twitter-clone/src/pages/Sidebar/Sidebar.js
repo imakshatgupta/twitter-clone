@@ -69,6 +69,9 @@ function Sidebar({ handleLogout, user }) {
       <CustomeLink to='/home/lists'>
         <SidebarOptions Icon={ListAltIcon} text="Lists" />
       </CustomeLink>
+      <CustomeLink to='/home/premium'>
+        <SidebarOptions Icon={ListAltIcon} text="Premium" />
+      </CustomeLink>
       <CustomeLink to='/home/profile'>
         <SidebarOptions Icon={PermIdentityIcon} text="Profile" />
       </CustomeLink>
