@@ -66,6 +66,7 @@ function TweetBox() {
                 username: username,
                 name: name,
                 email: email,
+                date: new Date().toISOString().split('T')[0],
             }
             console.log(userPost);
             setPost('')
@@ -77,9 +78,9 @@ function TweetBox() {
                 .then(userPosts => {
                     const today = new Date().toISOString().split('T')[0];
                     console.log(userPosts);
-                    const userPostsToday = userPosts.filter(post => post.createdAt.split('T')[0] === today);
+                    const userPostsToday = userPosts.filter(post => post.date === today);
                     if (userPostsToday.length >= 1) {
-                        alert("Free plan allows only 1 tweet per day.");
+                        alert("Free plan allows only 1 tweet per day. Upgrade your plan to post more.");
                     } else {
                         fetch('http://localhost:5000/post', {
                             method: "POST",
@@ -101,9 +102,9 @@ function TweetBox() {
                 .then(res => res.json())
                 .then(userPosts => {
                     const today = new Date().toISOString().split('T')[0];
-                    const userPostsToday = userPosts.filter(post => post.createdAt.split('T')[0] === today);
-                    if (userPostsToday.length >= 2) {
-                        alert("Free plan allows only 1 tweet per day.");
+                    const userPostsToday = userPosts.filter(post => post.date === today);
+                    if (userPostsToday.length >= 5) {
+                        alert("Silver plan allows only 5 tweet per day. Upgrade your plan to post more.");
                     } else {
                         fetch('http://localhost:5000/post', {
                             method: "POST",
@@ -118,6 +119,24 @@ function TweetBox() {
                             })
                     }
                 })
+                .catch(error => console.error(error));
+            }else if (buy === "3") {
+                
+                fetch(`http://localhost:5000/userPost?email=${email}`)
+                .then(res => res.json())
+                .then(userPosts => {
+                        fetch('http://localhost:5000/post', {
+                            method: "POST",
+                            headers: {
+                                'content-type': 'application/json'
+                            },
+                            body: JSON.stringify(userPost),
+                        })
+                            .then(res => res.json())
+                            .then(data => {
+                                console.log(data);
+                            })
+                        })
                 .catch(error => console.error(error));
             }
         }
