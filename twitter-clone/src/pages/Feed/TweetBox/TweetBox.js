@@ -40,6 +40,7 @@ function TweetBox() {
     }
 
 
+
     const handleTweet = (e) => {
         e.preventDefault();
 
@@ -70,23 +71,57 @@ function TweetBox() {
             setPost('')
             setImageURL('')
             
-            
-
-            fetch('http://localhost:5000/post', {
-                method: "POST",
-                headers: {
-                    'content-type': 'application/json'
-                },
-                body: JSON.stringify(userPost),
-            })
+            if(buy === "1"){
+                fetch(`http://localhost:5000/userPost?email=${email}`)
                 .then(res => res.json())
-                .then(data => {
-                    console.log(data);
-
+                .then(userPosts => {
+                    const today = new Date().toISOString().split('T')[0];
+                    console.log(userPosts);
+                    const userPostsToday = userPosts.filter(post => post.createdAt.split('T')[0] === today);
+                    if (userPostsToday.length >= 1) {
+                        alert("Free plan allows only 1 tweet per day.");
+                    } else {
+                        fetch('http://localhost:5000/post', {
+                            method: "POST",
+                            headers: {
+                                'content-type': 'application/json'
+                            },
+                            body: JSON.stringify(userPost),
+                        })
+                        .then(res => res.json())
+                        .then(data => {
+                                console.log(data);
+                            })
+                    }
                 })
+                .catch(error => console.error(error));
+            } else if (buy === "2") {
+                
+                fetch(`http://localhost:5000/userPost?email=${email}`)
+                .then(res => res.json())
+                .then(userPosts => {
+                    const today = new Date().toISOString().split('T')[0];
+                    const userPostsToday = userPosts.filter(post => post.createdAt.split('T')[0] === today);
+                    if (userPostsToday.length >= 2) {
+                        alert("Free plan allows only 1 tweet per day.");
+                    } else {
+                        fetch('http://localhost:5000/post', {
+                            method: "POST",
+                            headers: {
+                                'content-type': 'application/json'
+                            },
+                            body: JSON.stringify(userPost),
+                        })
+                            .then(res => res.json())
+                            .then(data => {
+                                console.log(data);
+                            })
+                    }
+                })
+                .catch(error => console.error(error));
+            }
         }
     }
-
     return <div className="tweetBox">
         <form onSubmit={handleTweet}>
             <div className="tweetBox__input">
