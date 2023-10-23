@@ -5,7 +5,7 @@ import TweetBox from "./TweetBox/TweetBox";
 
 function Feed() {
     const [posts, setPosts] = useState([]);
-    const [isSidebarVisible, setIsSidebarVisible] = useState(false);
+    // const [isSidebarVisible, setIsSidebarVisible] = useState(false);
 
     useEffect(() => {
         //fetch('https://pacific-peak-30751.herokuapp.com/post')
@@ -16,18 +16,18 @@ function Feed() {
             })
     }, [posts])
 
-    const toggleSidebar = () => {
-        setIsSidebarVisible(!isSidebarVisible);
-    };
+    // const toggleSidebar = () => {
+    //     setIsSidebarVisible(!isSidebarVisible);
+    // };
 
     return (
         <div className="feed">
             <div className="feed__header">
                
                 <h2>
-                <button className="hamburger-btn" onClick={toggleSidebar}>
+                {/* <button className="hamburger-btn" onClick={toggleSidebar}>
                     ☰ 
-                </button>
+                </button> */}
                 Home</h2>
             </div>
             <TweetBox />
