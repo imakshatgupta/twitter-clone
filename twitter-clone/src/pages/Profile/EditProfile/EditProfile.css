@@ -149,3 +149,32 @@
 .last-section>.last-btn:hover {
   background-color: #b4b7b9
 }
+
+
+@media (max-width: 768px) {
+  
+  .header>.header-title {
+    font-size: 18px;
+  }
+
+  .header>.save-btn {
+    padding: 5px 15px;
+  }
+
+  .birthdate-section {
+    margin-left: 10px;
+  }
+
+  .birthdate-section p {
+    font-size: 14px;
+  }
+
+  .text {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .last-section h2 {
+    margin-left: 10px;
+  }
+}

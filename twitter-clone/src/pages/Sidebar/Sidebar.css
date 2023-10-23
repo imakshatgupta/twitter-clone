@@ -6,7 +6,7 @@
   margin-top: 20px;
   padding-right: 20px;
   overflow-y: scroll;
-  display: none; /* Hide sidebar by default */
+  /* display: none; Hide sidebar by default */
 
 }
 
@@ -79,6 +79,7 @@
 }
 
 @media screen and (max-width:688px) {
+ 
   .sidebar {
     display: none;
   }

@@ -44,6 +44,7 @@ function EditChild({ dob, setDob }) {
         onClose={handleClose}
         aria-labelledby="child-modal-title"
         aria-describedby="child-modal-description"
+        className='mod'
       >
         <Box sx={{ ...style, width: 300, height: 300 }}>
           <div className='text'>
@@ -102,7 +103,7 @@ export default function EditProfile({ user, loggedInUser }) {
 
       <Modal
         open={open}
-
+className='mod'
         aria-labelledby="modal-modal-title"
         aria-describedby="modal-modal-description"
       >

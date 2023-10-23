@@ -108,7 +108,7 @@ const MainProfile = ({ user }) => {
   }
 
   return (
-    <div>
+    <div className='sys'>
       <ArrowBackIcon className='arrow-icon' onClick={() => navigate('/')} />
       <h4 className='heading-4'>{username}</h4>
       <div className='mainprofile' >
