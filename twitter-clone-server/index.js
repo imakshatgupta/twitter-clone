@@ -17,7 +17,7 @@ async function run() {
         const postCollection = client.db("database").collection("posts"); // this collection is for team-ekt
         const userCollection = client.db("database").collection("users"); // this collection is for team-srv
         console.log("connected to db");
-
+        
         // get
         app.get('/user', async (req, res) => {
             const user = await userCollection.find().toArray();
@@ -58,6 +58,7 @@ async function run() {
             const options = { upsert: true };
             const updateDoc = { $set: profile };
             const result = await userCollection.updateOne(filter, updateDoc, options);
+
             res.send(result)
         })
 

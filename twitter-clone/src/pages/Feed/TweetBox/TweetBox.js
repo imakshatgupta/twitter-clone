@@ -12,6 +12,7 @@ function TweetBox() {
     const [isLoading, setIsLoading] = useState(false);
     const [name, setName] = useState('');
     const [username, setUsername] = useState(' ');
+    const [buy, setBuy] = useState(' ');
     const [loggedInUser] = useLoggedInUser();
     const { user } = useUserAuth();
     const email = user?.email;
@@ -19,7 +20,6 @@ function TweetBox() {
 
     const userProfilePic = loggedInUser[0]?.profileImage ? loggedInUser[0]?.profileImage : "https://cdn.pixabay.com/photo/2016/08/08/09/17/avatar-1577909_960_720.png"
 
-    // console.log(user?.providerData[0]?.providerId);
 
     const handleUploadImage = e => {
         setIsLoading(true);
@@ -39,6 +39,7 @@ function TweetBox() {
             })
     }
 
+
     const handleTweet = (e) => {
         e.preventDefault();
 
@@ -48,6 +49,7 @@ function TweetBox() {
                 .then(data => {
                     setName(data[0]?.name)
                     setUsername(data[0]?.username)
+                    setBuy(data[0]?.plan)
                 })
         }
         else {
@@ -67,6 +69,9 @@ function TweetBox() {
             console.log(userPost);
             setPost('')
             setImageURL('')
+            
+            
+
             fetch('http://localhost:5000/post', {
                 method: "POST",
                 headers: {

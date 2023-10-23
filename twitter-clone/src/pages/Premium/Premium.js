@@ -1,35 +1,57 @@
 import React, {useState} from 'react'
+import { useUserAuth } from "../../context/UserAuthContext"
 
 import "./SubscriptionsPage.css";
 
 const Premium = () => {
-  const [selectedPlan, setSelectedPlan] = useState(null);
+    const { user } = useUserAuth();
+    
+    
+    const [selectedPlan, setSelectedPlan] = useState(null);
+  const [plan, setPlan] = React.useState('')
+
 
   const handlePlanSelect = (plan) => {
     setSelectedPlan(plan);
-  };
-
-  const plans = [
+    setPlan(plan);
+        const editedInfo = {
+            plan,
+        }
+        console.log(editedInfo);
+        fetch(`http://localhost:5000/userUpdates/${user?.email}`, {
+          method: "PATCH",
+          headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify(editedInfo),
+    })
+    .then(res => res.json())
+    .then(data => {
+        console.log('done', data);
+          })
+    }
+    
+    const plans = [
     {
-      id: 1,
+        id: "1",
       name: "Free Plan",
       price: "Free",
       tweetsPerDay: 1,
     },
     {
-      id: 2,
+      id: "2",
       name: "Silver Plan",
       price: "₹100/month",
       tweetsPerDay: 5,
     },
     {
-      id: 3,
+      id: "3",
       name: "Gold Plan",
       price: "₹1000/month",
       tweetsPerDay: "Unlimited",
     },
   ];
-
+  
   return (
     <div className="subscriptions-container">
       <h2>Choose Your Plan</h2>
