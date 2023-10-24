@@ -1,86 +1,72 @@
-import React, {useState} from 'react'
-import { useUserAuth } from "../../context/UserAuthContext"
+import React , {useEffect} from "react";
+import { useUserAuth } from "../../context/UserAuthContext";
 
-import "./SubscriptionsPage.css";
+import "./Premium.css";
 
 const Premium = () => {
-    const { user } = useUserAuth();
-    
-    
-    const [selectedPlan, setSelectedPlan] = useState(null);
-  const [plan, setPlan] = React.useState('')
+  const { user } = useUserAuth();
+
+  const [aplan, setAplan] = React.useState("");
+  const [plan, setPlan] = React.useState("");
 
 
-  const handlePlanSelect = (plan) => {
-    setSelectedPlan(plan);
-    setPlan(plan);
-        const editedInfo = {
-            plan,
-        }
-        console.log(editedInfo);
-        fetch(`http://localhost:5000/userUpdates/${user?.email}`, {
-          method: "PATCH",
-          headers: {
-            'content-type': 'application/json'
-        },
-        body: JSON.stringify(editedInfo),
-    })
-    .then(res => res.json())
-    .then(data => {
-        console.log('done', data);
+  useEffect(() => {
+      fetch('http://localhost:5000/loggedInUser')
+          .then(res => res.json())
+          .then(data => {
+              setAplan(data[0]);
           })
-    }
-    
-    const plans = [
-    {
-        id: "1",
-      name: "Free Plan",
-      price: "Free",
-      tweetsPerDay: 1,
-    },
-    {
-      id: "2",
-      name: "Silver Plan",
-      price: "₹100/month",
-      tweetsPerDay: 5,
-    },
-    {
-      id: "3",
-      name: "Gold Plan",
-      price: "₹1000/month",
-      tweetsPerDay: "Unlimited",
-    },
-  ];
-  
+  }, [aplan])
+
+  console.log(aplan);
+
+
+  const makePaymentSilver = () => {
+    setPlan("2");
+    const editedInfo = {
+      plan,
+    };
+    console.log(editedInfo);
+    fetch(`http://localhost:5000/userUpdates/${user?.email}`, {
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(editedInfo),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        // console.log(data);
+
+      });
+  };
+
   return (
     <div className="subscriptions-container">
       <h2>Choose Your Plan</h2>
       <div className="plans">
-        {plans.map((plan) => (
-          <div
-            key={plan.id}
-            className={`plan-card ${selectedPlan === plan.id ? "selected" : ""}`}
-            onClick={() => handlePlanSelect(plan.id)}
-          >
-            <h3>{plan.name}</h3>
-            <p>{plan.price}</p>
-            <p>{`Tweets Per Day: ${plan.tweetsPerDay}`}</p>
-          </div>
-        ))}
-      </div>
-      {selectedPlan && (
-        <div className="selected-plan-info">
-          <h2>Selected Plan: {plans.find((plan) => plan.id === selectedPlan).name}</h2>
-          <p>
-            You can post{" "}
-            {plans.find((plan) => plan.id === selectedPlan).tweetsPerDay} tweets per day.
-          </p>
+        <div className="plan-card">
+          <h3>Free Plan</h3>
+          <p>Free</p>
+          <p>Tweets Per Day: 1 </p>
         </div>
-      )}
+
+        <div className="plan-card" onClick={ makePaymentSilver}>
+          <h3>Silver Plan</h3>
+          <p>₹100/month</p>
+          <p>Tweets Per Day: 5 </p>
+        </div>
+        <div
+          className="plan-card"
+          // onClick={() => makePaymentGold }
+        >
+          <h3>Gold Plan</h3>
+          <p>₹1000/month</p>
+          <p>Tweets Per Day: Unlimited </p>
+        </div>
+      </div>
     </div>
   );
 };
 
-
-
-export default Premium
+export default Premium;

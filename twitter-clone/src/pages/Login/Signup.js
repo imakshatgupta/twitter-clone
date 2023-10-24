@@ -26,6 +26,7 @@ const Signup = () => {
                 username: username,
                 name: name,
                 email: email,
+                plan: "1",
             }
 
             fetch('http://localhost:5000/register', {
