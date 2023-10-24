@@ -1,6 +1,6 @@
 import React, { useEffect } from "react";
 import { useUserAuth } from "../../context/UserAuthContext";
-
+import {loadStripe} from "@stripe/stripe-js";
 import "./Premium.css";
 
 const Premium = () => {
@@ -8,7 +8,7 @@ const Premium = () => {
   const email = user?.email;
 
   const [aplan, setAplan] = React.useState("");
-  const [plan, setPlan] = React.useState("");
+  // const [plan, setPlan] = React.useState("");
 
   useEffect(() => {
     fetch(`http://localhost:5000/loggedInUser?email=${email}`)
@@ -20,23 +20,73 @@ const Premium = () => {
 
   console.log(aplan);
 
-  const makePaymentSilver = () => {
-    setPlan("2");
-    const editedInfo = {
-      plan,
-    };
-    console.log(editedInfo);
-    fetch(`http://localhost:5000/userUpdates/${user?.email}`, {
-      method: "PATCH",
+  const makePaymentSilver = async () => {
+    try{
+    // const stripe = await loadStripe("pk_test_51O4hY9SAFIUZ4HpWQqIARd8Q3473PlKvRT4hJPcpRhpRYt1zgIObxZnbSF5SIY1gj6PV8oTMIRukMOlRVZekFi3l00fu3xrjla");
+    const res = await fetch("http://localhost:5000/create-checkout-session-silver", {
+      method: "POST",
       headers: {
         "content-type": "application/json",
       },
-      body: JSON.stringify(editedInfo),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data);
+      mode: "cors",
+      body: JSON.stringify({ plan: "Silver Plan" }),
+    });
+    const data = await res.json();
+    if (data.error) {
+      console.log(data.error.message);
+    }
+    else{
+      const editedInfo = {
+        plan: "2",
+      };
+      console.log(editedInfo);
+      fetch(`http://localhost:5000/userUpdates/${user?.email}`, {
+        method: "PATCH",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(editedInfo),
       });
+    }
+    window.location=data.url;
+    }
+    catch(err){
+      console.log(err);
+    }
+  };
+  const makePaymentGold = async () => {
+    try{
+    // const stripe = await loadStripe("pk_test_51O4hY9SAFIUZ4HpWQqIARd8Q3473PlKvRT4hJPcpRhpRYt1zgIObxZnbSF5SIY1gj6PV8oTMIRukMOlRVZekFi3l00fu3xrjla");
+    const res = await fetch("http://localhost:5000/create-checkout-session-gold", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      mode: "cors",
+      body: JSON.stringify({ plan: "Gold Plan" }),
+    });
+    const data = await res.json();
+    if (data.error) {
+      console.log(data.error.message);
+    }
+    else{
+      const editedInfo = {
+        plan: "3",
+      };
+      console.log(editedInfo);
+      fetch(`http://localhost:5000/userUpdates/${user?.email}`, {
+        method: "PATCH",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(editedInfo),
+      });
+    }
+    window.location=data.url;
+    }
+    catch(err){
+      console.log(err);
+    }
   };
 
   return (
@@ -49,7 +99,7 @@ const Premium = () => {
             <p>₹100/month</p>
             <p>Tweets Per Day: 5</p>
           </div>
-          <div className="plan-card">
+          <div className="plan-card" onClick={makePaymentGold}>
             <h3>Gold Plan</h3>
             <p>₹1000/month</p>
             <p>Tweets Per Day: Unlimited</p>
@@ -58,7 +108,7 @@ const Premium = () => {
       ) : aplan === "2" ? (
         <>
           <h2>You are on Silver Plan. Upgrade now.</h2>
-          <div className="plan-card">
+          <div className="plan-card" onClick={makePaymentGold}>
             <h3>Gold Plan</h3>
             <p>₹1000/month</p>
             <p>Tweets Per Day: Unlimited</p>
