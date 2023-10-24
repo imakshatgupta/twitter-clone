@@ -21,7 +21,7 @@ const Premium = () => {
   console.log(aplan);
 
   const makePaymentSilver = () => {
-    setPlan("3");
+    setPlan("2");
     const editedInfo = {
       plan,
     };
@@ -57,22 +57,20 @@ const Premium = () => {
         </>
       ) : aplan === "2" ? (
         <>
-        <h1>You are on Silver Plan. Upgrade now.</h1>
-        <div className="plan-card">
+          <h2>You are on Silver Plan. Upgrade now.</h2>
+          <div className="plan-card">
             <h3>Gold Plan</h3>
             <p>₹1000/month</p>
             <p>Tweets Per Day: Unlimited</p>
           </div>
-</>
+        </>
       ) : aplan === "3" ? (
-        <h1>You are on Gold Plan. Enjoy!!</h1>
-      ) 
-      : (
-        <h1>Loading...</h1>
+        <h2>You are on Gold Plan. Enjoy!!</h2>
+      ) : (
+        <h2></h2>
       )}
     </div>
   );
-}
-
+};
 
 export default Premium;
