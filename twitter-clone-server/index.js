@@ -7,7 +7,7 @@ const stripe = require("stripe")(
   "sk_test_51O4hY9SAFIUZ4HpWObRqBcH8pMoyVPbcCLpOzNuMKw5Rw4Yv4GZqh8ylqqHrUEkKWPheK1UK04B7A4I3uL6kGorK00soCEj7xH"
 );
 
-app.use(cors({ origin: "http://localhost:3000"}));
+app.use(cors({ origin: "http://localhost:3000" }));
 app.use(express.json());
 
 const uri = `mongodb+srv://akshatgtc:Akshat123@cluster0.2zu3863.mongodb.net/?retryWrites=true&w=majority`;
@@ -60,56 +60,56 @@ async function run() {
     });
 
     app.post("/create-checkout-session-silver", async (req, res) => {
-        try {
-          const session = await stripe.checkout.sessions.create({
-            payment_method_types: ["card"], 
-            mode: "payment",
-            line_items: [
-              {
-                price_data: {
-                  currency: "inr",
-                  product_data: {
-                    name: "Silver Plan",
-                  },
-                  unit_amount: 10000,
+      try {
+        const session = await stripe.checkout.sessions.create({
+          payment_method_types: ["card"],
+          mode: "payment",
+          line_items: [
+            {
+              price_data: {
+                currency: "inr",
+                product_data: {
+                  name: "Silver Plan",
                 },
-                quantity: 1,
+                unit_amount: 10000,
               },
-            ],
-            success_url: "http://localhost:3000/",
-            cancel_url: "http://localhost:3000/failure",
-          });
-          res.json({ url: session.url });
-        } catch (error) {
-          res.status(500).send({ error: error.message });
-        }
-      });
+              quantity: 1,
+            },
+          ],
+          success_url: "http://localhost:3000/",
+          cancel_url: "http://localhost:3000/failure",
+        });
+        res.json({ url: session.url });
+      } catch (error) {
+        res.status(500).send({ error: error.message });
+      }
+    });
     app.post("/create-checkout-session-gold", async (req, res) => {
-        try {
-          const session = await stripe.checkout.sessions.create({
-            payment_method_types: ["card"], 
-            mode: "payment",
-            line_items: [
-              {
-                price_data: {
-                  currency: "inr",
-                  product_data: {
-                    name: "Gold Plan",
-                  },
-                  unit_amount: 100000,
+      try {
+        const session = await stripe.checkout.sessions.create({
+          payment_method_types: ["card"],
+          mode: "payment",
+          line_items: [
+            {
+              price_data: {
+                currency: "inr",
+                product_data: {
+                  name: "Gold Plan",
                 },
-                quantity: 1,
+                unit_amount: 100000,
               },
-            ],
-            success_url: "http://localhost:3000/",
-            cancel_url: "http://localhost:3000/failure",
-          });
-          res.json({ url: session.url });
-        } catch (error) {
-          res.status(500).send({ error: error.message });
-        }
-      });
-      
+              quantity: 1,
+            },
+          ],
+          success_url: "http://localhost:3000/",
+          cancel_url: "http://localhost:3000/failure",
+        });
+        res.json({ url: session.url });
+      } catch (error) {
+        res.status(500).send({ error: error.message });
+      }
+    });
+
     // patch
     app.patch("/userUpdates/:email", async (req, res) => {
       const filter = req.params;
