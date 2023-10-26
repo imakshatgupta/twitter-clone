@@ -22,6 +22,11 @@ export function UserAuthContextProvider({ children }) {
   const [loginAttempts, setLoginAttempts] = useState(0);
 
   function logIn(email, password) {
+    if (loginAttempts > 4) {
+      alert("Your account is blocked for 1 hour.");
+      return;
+    }
+    else{
     return signInWithEmailAndPassword(auth, email, password)
       .then(() => {
         setLoginAttempts(0);
@@ -30,16 +35,16 @@ export function UserAuthContextProvider({ children }) {
         setLoginAttempts(loginAttempts + 1);
         console.log("Login attempts", loginAttempts);
         if (2 <= loginAttempts && loginAttempts < 4) {
-          alert(
-            ` You have done ${
-              loginAttempts + 1
-            } consecutive failed login attempts with an incorrect password`
-          );
           sendEmailNotification(email, {
             message: ` You have done ${
               loginAttempts + 1
             } consecutive failed login attempts with an incorrect password`,
           });
+          alert(
+            ` You have done ${
+              loginAttempts + 1
+            } consecutive failed login attempts with an incorrect password`
+          );
         } else if (loginAttempts >= 4) {
           sendEmailNotification(email, {
             message: ` You have done maximum failed attempts. Your account has been blocked for 1 hour.`,
@@ -47,9 +52,13 @@ export function UserAuthContextProvider({ children }) {
           alert(
             "You have done maximum failed attempts. Your account has been blocked for 1 hour."
           );
+          setTimeout(() => {
+            setLoginAttempts(0);
+          }, 360000);
         }
         throw error;
       });
+  }
   }
 
   function signUp(email, password) {
@@ -62,7 +71,7 @@ export function UserAuthContextProvider({ children }) {
     const googleAuthProvider = new GoogleAuthProvider();
     return signInWithPopup(auth, googleAuthProvider);
   }
-
+  
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentuser) => {
       // console.log("Auth", currentuser);

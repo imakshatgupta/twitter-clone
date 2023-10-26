@@ -20,8 +20,8 @@ const Login = () => {
       await logIn(email, password);
       navigate("/");
     } catch (err) {
-      setError(err.message);
-      window.alert(err.message);
+      console.log(err.message);
+      // window.alert(err.message);
     }
   };
 

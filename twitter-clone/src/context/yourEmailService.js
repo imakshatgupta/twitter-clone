@@ -1,5 +1,5 @@
 import emailjs from "@emailjs/browser";
-// import { db } from "./firebase";
+import { db } from "./firebase";
 
 function sendEmailNotification  (email , {message})  {
     console.log("Sending email notification...");
