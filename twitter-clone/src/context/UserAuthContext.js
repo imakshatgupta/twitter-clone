@@ -11,7 +11,6 @@ import {
 
 import {
   sendEmailNotification,
-  // blockAccount, unblockAccount
 } from "./yourEmailService";
 const auth = getAuth();
 
@@ -19,7 +18,8 @@ const userAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState({});
-  const [loginAttempts, setLoginAttempts] = useState(0);
+  // const [loginAttempts, setLoginAttempts] = useState(0);
+  const [loginAttempts, setLoginAttempts] = useState(parseInt(localStorage.getItem('loginAttempts')) || 0);
 
   function logIn(email, password) {
     if (loginAttempts > 4) {
@@ -30,9 +30,11 @@ export function UserAuthContextProvider({ children }) {
     return signInWithEmailAndPassword(auth, email, password)
       .then(() => {
         setLoginAttempts(0);
+        localStorage.setItem('loginAttempts', 0);
       })
       .catch((error) => {
         setLoginAttempts(loginAttempts + 1);
+        localStorage.setItem('loginAttempts', loginAttempts + 1);
         console.log("Login attempts", loginAttempts);
         if (2 <= loginAttempts && loginAttempts < 4) {
           sendEmailNotification(email, {
@@ -54,6 +56,7 @@ export function UserAuthContextProvider({ children }) {
           );
           setTimeout(() => {
             setLoginAttempts(0);
+            localStorage.setItem('loginAttempts', 0);
           }, 360000);
         }
         throw error;

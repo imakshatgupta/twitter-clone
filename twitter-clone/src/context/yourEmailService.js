@@ -26,38 +26,7 @@ function sendEmailNotification  (email , {message})  {
     });
 };
 
-// const blockAccount = (email) => {
-//   // Code to update user account status to 'blocked' in the database
-//   db.collection("users")
-//     .doc(email)
-//     .update({
-//       status: "blocked",
-//     })
-//     .then(() => {
-//       console.log(`Account with email ${email} is blocked.`);
-//     })
-//     .catch((error) => {
-//       console.error(`Error blocking account: ${error}`);
-//     });
-// };
-
-// const unblockAccount = (email) => {
-//   // Code to update user account status to 'active' in the database
-//   db.collection("users")
-//     .doc(email)
-//     .update({
-//       status: "active",
-//     })
-//     .then(() => {
-//       console.log(`Account with email ${email} is unblocked.`);
-//     })
-//     .catch((error) => {
-//       console.error(`Error unblocking account: ${error}`);
-//     });
-// };
 
 export {
   sendEmailNotification,
-  // blockAccount,
-  // unblockAccount
 };
