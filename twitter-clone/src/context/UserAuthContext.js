@@ -24,6 +24,10 @@ export function UserAuthContextProvider({ children }) {
   function logIn(email, password) {
     if (loginAttempts > 4) {
       alert("Your account is blocked for 1 hour.");
+      setTimeout(() => {
+        setLoginAttempts(0);
+        localStorage.setItem('loginAttempts', 0);
+      }, 6000);
       return;
     }
     else{
@@ -57,7 +61,7 @@ export function UserAuthContextProvider({ children }) {
           setTimeout(() => {
             setLoginAttempts(0);
             localStorage.setItem('loginAttempts', 0);
-          }, 360000);
+          }, 6000);
         }
         throw error;
       });
