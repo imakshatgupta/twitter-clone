@@ -27,7 +27,7 @@ export function UserAuthContextProvider({ children }) {
       setTimeout(() => {
         setLoginAttempts(0);
         localStorage.setItem('loginAttempts', 0);
-      }, 6000);
+      }, 360000);
       return;
     }
     else{
@@ -61,7 +61,7 @@ export function UserAuthContextProvider({ children }) {
           setTimeout(() => {
             setLoginAttempts(0);
             localStorage.setItem('loginAttempts', 0);
-          }, 6000);
+          }, 360000);
         }
         throw error;
       });
@@ -81,7 +81,6 @@ export function UserAuthContextProvider({ children }) {
   
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentuser) => {
-      // console.log("Auth", currentuser);
       setUser(currentuser);
     });
 
