@@ -21,11 +21,29 @@ export function UserAuthContextProvider({ children }) {
 
   function logIn(email, password, loginAttempts, time) {
     var nowtime = Date.now();
-    if (loginAttempts > 4 && (nowtime - time) < 3600000) {
+    console.log("Your account is blocked for 1 hour." , nowtime - time);
+    if (loginAttempts > 4) {
+      if (nowtime - time < 3600000) {
       alert("Your account is blocked for 1 hour.");
-      console.log("Your account is blocked for 1 hour." , nowtime - time);
       return;
-    } else {
+      } 
+      else {
+        const editedInfo = {
+          loginAttempts: "0",
+        };
+        console.log(editedInfo);
+
+        fetch(`http://localhost:5000/userUpdates/${email}`, {
+          method: "PATCH",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(editedInfo),
+        });
+        return;
+    } 
+    }
+    else {
       return signInWithEmailAndPassword(auth, email, password)
         .then(() => {
           console.log(loginAttempts);
