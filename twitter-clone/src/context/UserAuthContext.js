@@ -14,6 +14,7 @@ import {
 } from "./yourEmailService";
 const auth = getAuth();
 
+
 const userAuthContext = createContext();
 
 export function UserAuthContextProvider({ children }) {
@@ -24,22 +25,45 @@ export function UserAuthContextProvider({ children }) {
   function logIn(email, password , loginAttempts) {
     if (loginAttempts > 4) {
       alert("Your account is blocked for 1 hour.");
-      setTimeout(() => {
-        setLoginAttempts(0);
-        localStorage.setItem('loginAttempts', 0);
-      }, 360000);
+      // setTimeout(() => {
+      //   setLoginAttempts(0);
+      //   localStorage.setItem('loginAttempts', 0);
+      // }, 360000);
       return;
     }
     else{
     return signInWithEmailAndPassword(auth, email, password)
       .then(() => {
-        setLoginAttempts(0);
-        localStorage.setItem('loginAttempts', 0);
+        console.log(loginAttempts);
+        const editedInfo = {
+          loginAttempts: "0",
+        };
+        console.log(editedInfo);
+
+        fetch(`http://localhost:5000/userUpdates/${email}`, {
+          method: "PATCH",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(editedInfo),
+        });
       })
-      .catch((error) => {
-        setLoginAttempts(loginAttempts + 1);
-        localStorage.setItem('loginAttempts', loginAttempts + 1);
-        console.log("Login attempts", loginAttempts);
+      .catch((error ) => {
+
+        const updatedLoginAttempts = parseInt(loginAttempts, 10) + 1; // Increment login attempts
+        console.log(updatedLoginAttempts , loginAttempts);
+        const editedInfo = {
+          loginAttempts: updatedLoginAttempts
+        };
+        console.log(editedInfo);
+        fetch(`http://localhost:5000/userUpdates/${email}`, {
+          method: "PATCH",
+          headers: {
+            "content-type": "application/json",
+          },
+          body: JSON.stringify(editedInfo),
+        });
+        console.log("Login attempts k", loginAttempts);
         if (2 <= loginAttempts && loginAttempts < 4) {
           sendEmailNotification(email, {
             message: ` You have done ${
@@ -58,10 +82,10 @@ export function UserAuthContextProvider({ children }) {
           alert(
             "You have done maximum failed attempts. Your account has been blocked for 1 hour."
           );
-          setTimeout(() => {
-            setLoginAttempts(0);
-            localStorage.setItem('loginAttempts', 0);
-          }, 360000);
+          // setTimeout(() => {
+          //   setLoginAttempts(0);
+          //   localStorage.setItem('loginAttempts', 0);
+          // }, 360000);
         }
         throw error;
       });
