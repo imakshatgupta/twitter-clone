@@ -4,8 +4,7 @@ import { db } from "./firebase";
 function sendEmailNotification  (email , {message})  {
     console.log("Sending email notification...");
   const templateParams = {
-    from_name: "Twitter",
-    to_name: "Akshat Gupta",
+    from_name: "Twitter Clone",
     from_email: "akshatgtc@gmail.com",
     to_email: email,
     message: message,
