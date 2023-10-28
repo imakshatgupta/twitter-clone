@@ -19,9 +19,9 @@ const userAuthContext = createContext();
 export function UserAuthContextProvider({ children }) {
   const [user, setUser] = useState({});
   // const [loginAttempts, setLoginAttempts] = useState(0);
-  const [loginAttempts, setLoginAttempts] = useState(parseInt(localStorage.getItem('loginAttempts')) || 0);
+  // const [loginAttempts, setLoginAttempts] = useState(parseInt(localStorage.getItem('loginAttempts')) || 0);
 
-  function logIn(email, password) {
+  function logIn(email, password , loginAttempts) {
     if (loginAttempts > 4) {
       alert("Your account is blocked for 1 hour.");
       setTimeout(() => {
