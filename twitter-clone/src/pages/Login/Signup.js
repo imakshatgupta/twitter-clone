@@ -27,7 +27,8 @@ const Signup = () => {
                 name: name,
                 email: email,
                 plan: "1",
-                loginAttempts: "0",   
+                loginAttempts: "0",  
+                time : 0, 
             }
 
             fetch('http://localhost:5000/register', {

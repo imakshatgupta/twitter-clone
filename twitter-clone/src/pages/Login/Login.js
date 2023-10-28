@@ -1,4 +1,4 @@
-import React, { useState , useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import GoogleButton from "react-google-button";
 import { useUserAuth } from "../../context/UserAuthContext";
@@ -13,26 +13,25 @@ const Login = () => {
   const { logIn, googleSignIn } = useUserAuth();
   const navigate = useNavigate();
 
-
   const [loginAttempts, setLoginAttempts] = React.useState("");
-  // const [plan, setPlan] = React.useState("");
+  const [time, setTime] = React.useState("");
 
-  
   useEffect(() => {
     fetch(`http://localhost:5000/loggedInUser?email=${email}`)
       .then((res) => res.json())
       .then((data) => {
         setLoginAttempts(data[0]?.loginAttempts);
+        setTime(data[0]?.time);
       });
-    }, [loginAttempts , email]);
-    
+  }, [loginAttempts, email, time]);
+
   console.log(loginAttempts);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     try {
-      await logIn(email, password , loginAttempts);
+      await logIn(email, password, loginAttempts , time);
       navigate("/");
     } catch (err) {
       console.log(err.message);
