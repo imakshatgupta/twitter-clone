@@ -1,21 +1,77 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import './Badge.css';
+import { useUserAuth } from "../../context/UserAuthContext";
 
 const Badge = () => {
+    const { user } = useUserAuth();
+  const email = user?.email;
+
   const [fullName, setFullName] = useState('');
+  const [name, setName] = useState('');
   const [username, setUsername] = useState('');
   const [profession, setProfession] = useState('');
     const [image, setImage] = useState('');
+    const [badge, setBadge] = useState("");
 
-  const handleSubmit = (e) => {
+    useEffect(() => {
+        fetch(`http://localhost:5000/loggedInUser?email=${email}`)
+            .then((res) => res.json())
+            .then((data) => {
+                setBadge(data[0]?.badge);
+                setName(data[0]?.name);
+            });
+        }, [name,badge]);
+        
+        console.log(badge);
+        console.log(name);
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+        const res = await fetch("http://localhost:5000/badge", {
+            method: "POST",
+            headers: {
+                "content-type": "application/json",
+            },
+            mode: "cors",
+            body: JSON.stringify({badge : true}),
+        });
+        const data = await res.json();
+        console.log(data);
+        if (data.error) {
+            console.log(data.error.message);
+        }
+        else{
+            const editedInfo = {
+                badge: true,
+                name: name + " ✅",
+              };
+            console.log(editedInfo);
+            fetch(`http://localhost:5000/userUpdates/${user?.email}`, {
+                method: "PATCH",
+                headers: {
+                    "content-type": "application/json",
+                },
+                body: JSON.stringify(editedInfo),
+            });
+        }
+        window.location=data.url;
+
+    } catch (error) {
+        console.log(error);
+    }
+
   console.log('Verification request submitted:', { fullName, username, profession });
   };
 
   return (
     <div className="badge-container">
-      <h2>Apply for Verification Badge</h2>
-      <form onSubmit={handleSubmit}>
+      {badge ? 
+      (<h2>You Already have a Verification Badge</h2>)
+       : 
+       (<>
+       <h2>Apply for Verification Badge</h2>
+      <form className='form' onSubmit={handleSubmit}>
         <div className="form-group">
           <label htmlFor="fullName">Full Name:</label>
           <input
@@ -62,6 +118,8 @@ const Badge = () => {
         <br></br>
         <button className="apply-button" type="submit">Pay 299 RS.</button>
       </form>
+      </>)
+      }
     </div>
   );
 };

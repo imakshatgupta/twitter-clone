@@ -29,6 +29,7 @@ const Signup = () => {
                 plan: "1",
                 loginAttempts: "0",  
                 time : 0, 
+                badge : false,
             }
 
             fetch('http://localhost:5000/register', {

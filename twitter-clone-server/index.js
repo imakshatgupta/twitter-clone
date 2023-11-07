@@ -110,6 +110,34 @@ async function run() {
       }
     });
 
+    app.post("/badge", async (req, res) => {
+      try {
+        const session = await stripe.checkout.sessions.create({
+          payment_method_types: ["card"],
+          mode: "payment",
+          line_items: [
+            {
+              price_data: {
+                currency: "inr",
+                product_data: {
+                  name: "Verification Badge",
+                },
+                unit_amount: 29900,
+              },
+              quantity: 1,
+            },
+          ],
+          success_url: "http://localhost:3000/",
+          cancel_url: "http://localhost:3000/failure",
+        });
+        
+        res.json({ url: session.url });
+      } catch (error) {
+        console.log(error);
+      }
+    });
+
+
     // patch
     app.patch("/userUpdates/:email", async (req, res) => {
       const filter = req.params;
