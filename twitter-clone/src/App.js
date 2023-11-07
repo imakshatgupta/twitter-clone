@@ -15,6 +15,7 @@ import Profile from "./pages/Profile/Profile";
 import More from "./pages/More/More";
 import Notifications from "./pages/Notifications/Notifications";
 import Premium from "./pages/Premium/Premium";
+import Badge from "./pages/Badge/Badge.js";
 
 function App() {
   return (
@@ -37,6 +38,7 @@ function App() {
             <Route path="bookmarks" element={<Bookmarks />} />
             <Route path="lists" element={<Lists />} />
             <Route path="premium" element={<Premium />} />
+            <Route path="badge" element={<Badge />} />
 
             <Route path="profile" element={<Profile />} />
             <Route path="more" element={<More />} />

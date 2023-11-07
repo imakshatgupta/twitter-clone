@@ -20,7 +20,8 @@ function Post({ p }) {
           <div className="post__headerText">
             <h3>{name}{" "}
               <span className="post__headerSpecial">
-                <VerifiedUserIcon className="post__badge" /> @{username}
+                {/* <VerifiedUserIcon className="post__badge" /> */}
+                 @{username}
               </span>
             </h3>
           </div>
