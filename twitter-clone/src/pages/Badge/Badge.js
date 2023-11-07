@@ -20,7 +20,7 @@ const Badge = () => {
                 setBadge(data[0]?.badge);
                 setName(data[0]?.name);
             });
-        }, [name,badge]);
+        }, [name , badge]);
         
         console.log(badge);
         console.log(name);
