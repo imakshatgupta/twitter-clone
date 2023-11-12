@@ -1,14 +1,28 @@
 import React, { useState, useEffect } from 'react';
+import { useUserAuth } from "../../../context/UserAuthContext";
 import { useParams } from 'react-router-dom';
 import '../../pages.css';
 import MainProfile from './MainProfile';
-import useLoggedInUser from '../../../hooks/useLoggedInUser';
 
 function Profile() {
-  const { userId } = useParams();
-  const [user, setUser] = useState("");
-    const [loggedInUser] = useLoggedInUser();
+    const { user } = useUserAuth();
+  const email = user?.email;
+  const [aplan, setAplan] = React.useState("");
+  // const [plan, setPlan] = React.useState("");
 
+  useEffect(() => {
+    fetch(`http://localhost:5000/loggedInUser?email=${email}`)
+      .then((res) => res.json())
+      .then((data) => {
+        setAplan(data[0]?.username);
+      });
+  }, [aplan]);
+
+
+
+  const { userId } = useParams();
+  
+  const [ouser, setOuser] = useState("");
 
 //   useEffect(() => {
 //     fetch(`/user/${userId}`)
@@ -27,12 +41,10 @@ useEffect(() => {
     fetch(`http://localhost:5000/profile?userId=${userId}`)
       .then((res) => res.json())
       .then((data) => {
-        setUser(data[0]);
+        setOuser(data[0]);
       });
   }, [userId]);
 
-
-console.log(loggedInUser);
 
   return (
 //     <div className='profilePage'>
@@ -42,19 +54,19 @@ console.log(loggedInUser);
 //       <h2>The account is Private</h2>
 //     )}
 //   </div>
-<div className='profilePage'>
-{loggedInUser?.username.includes(user?.blockedUsername) ? (
-  <div>This user's profile is private</div>
+ <div className='profilePage'>
+{aplan.includes(ouser?.blockedUsername) ? (
+  <h2>This user's profile is private</h2>
 ) : (
   <div>
-    {user?.privacy === 'public' ? (
-      <MainProfile user={loggedInUser} />
+    {ouser?.privacy === 'public' ? (
+      <MainProfile user={ouser} />
     ) : (
-      <div>Loading...</div>
+      <h2>This user's profile is private</h2>
     )}
   </div>
 )}
-</div>
+</div> 
   );
 }
 
