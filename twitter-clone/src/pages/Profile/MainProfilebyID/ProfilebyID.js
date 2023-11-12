@@ -5,68 +5,52 @@ import '../../pages.css';
 import MainProfile from './MainProfile';
 
 function Profile() {
-    const { user } = useUserAuth();
+  const { user } = useUserAuth();
   const email = user?.email;
   const [aplan, setAplan] = React.useState("");
-  // const [plan, setPlan] = React.useState("");
-
-  useEffect(() => {
-    fetch(`http://localhost:5000/loggedInUser?email=${email}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setAplan(data[0]?.username);
-      });
-  }, [aplan]);
-
-
-
   const { userId } = useParams();
-  
-  const [ouser, setOuser] = useState("");
+  const [ouser, setOuser] = useState(null); // Initialize with null
 
-//   useEffect(() => {
-//     fetch(`/user/${userId}`)
-//     .then((response) => response.json())
+  // Fetch logged-in user's data
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/loggedInUser?email=${email}`);
+        const data = await response.json();
+        setAplan(data[0]?.username);
+      } catch (error) {
+        console.error('Error fetching logged-in user data:', error);
+      }
+    };
+    fetchData();
+  }, [email]);
 
-//       .then((data) => {
-//         console.log("data");
-//         console.log(data);  
-//         setUser(data);
-//         console.log("user");
-//       })
-//       .catch((error) => console.error('Error fetching user data:', error));
-//   }, [userId]);
-
-useEffect(() => {
-    fetch(`http://localhost:5000/profile?userId=${userId}`)
-      .then((res) => res.json())
-      .then((data) => {
+  // Fetch user data based on userId
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch(`http://localhost:5000/profile?userId=${userId}`);
+        const data = await response.json();
         setOuser(data[0]);
-      });
+      } catch (error) {
+        console.error('Error fetching user data:', error);
+      }
+    };
+    fetchData();
   }, [userId]);
 
-
+  // Check if data is loaded and handle conditional rendering
+  if (!aplan || !ouser) {
+    return <div>Loading...</div>; // You can replace this with a loading indicator
+  }
   return (
-//     <div className='profilePage'>
-//     {user?.privacy === "public" ? (
-//       <MainProfile user={user} />
-//     ) : (
-//       <h2>The account is Private</h2>
-//     )}
-//   </div>
- <div className='profilePage'>
-{aplan.includes(ouser?.blockedUsername) ? (
-  <h2>This user's profile is private</h2>
-) : (
-  <div>
-    {ouser?.privacy === 'public' ? (
-      <MainProfile user={ouser} />
-    ) : (
-      <h2>This user's profile is private</h2>
-    )}
-  </div>
-)}
-</div> 
+    <div className='profilePage'>
+      {ouser.privacy === "private" && ouser.blockedUsername?.includes(aplan) ? (
+        <h2>This user's profile is private</h2>
+      ) : (
+        <MainProfile user={ouser} />
+      )}
+    </div>
   );
 }
 
