@@ -2,7 +2,7 @@ import * as React from "react";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import CloseIcon from "@mui/icons-material/Close";
-import Switch from '@mui/material/Switch';
+import Switch from "@mui/material/Switch";
 
 import { IconButton } from "@mui/material";
 import Modal from "@mui/material/Modal";
@@ -55,7 +55,6 @@ function EditChild({ dob, setDob }) {
               Make sure you enter the age of the <br />
               person using the account.{" "}
             </p>
-            {/* <Button className='e-button'>Edit</Button> */}
             <input type="date" onChange={(e) => setDob(e.target.value)} />
             <Button
               className="e-button"
@@ -79,6 +78,9 @@ export default function EditProfile({ user, loggedInUser }) {
   const [website, setWebsite] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const [dob, setDob] = React.useState("");
+  const [blockedUsername, setBlockedUsername] = React.useState('');
+
+
 
   const HandleSave = () => {
     const editedInfo = {
@@ -88,8 +90,6 @@ export default function EditProfile({ user, loggedInUser }) {
       website,
       dob,
     };
-
- 
 
     console.log(editedInfo);
     fetch(`http://localhost:5000/userUpdates/${user?.email}`, {
@@ -108,6 +108,18 @@ export default function EditProfile({ user, loggedInUser }) {
   const handlePrivacyToggle = () => {
     const newPrivacy = privacy === "public" ? "private" : "public";
     setPrivacy(newPrivacy);
+  };
+
+  const handleBlockedUsernameChange = (e) => {
+    setBlockedUsername(e.target.value);
+  };
+
+  const handleAddBlockedUsername = () => {
+    loggedInUser((prevUser) => ({
+      ...prevUser,
+      blockedUsernames: [...prevUser.blockedUsernames, blockedUsername.trim()],
+    }));
+    setBlockedUsername("");
   };
 
   return (
@@ -171,6 +183,19 @@ export default function EditProfile({ user, loggedInUser }) {
             <TextField
               className="text-field"
               fullWidth
+              label="Blocked Usernames"
+              id="blockedUsernames"
+              variant="filled"
+              value={loggedInUser.blockedUsernames.join(", ")}
+              // Assuming you want to update the blocked usernames on each change
+              onChange={handleBlockedUsernameChange}
+            />
+            <button onClick={handleAddBlockedUsername}>
+              Add Blocked Username
+            </button>
+            <TextField
+              className="text-field"
+              fullWidth
               label="Privacy"
               id="fullWidth"
               variant="filled"
@@ -185,6 +210,7 @@ export default function EditProfile({ user, loggedInUser }) {
               color="primary"
               inputProps={{ "aria-label": "privacy toggle" }}
             />
+
             <TextField
               className="text-field"
               fullWidth
