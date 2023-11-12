@@ -45,7 +45,7 @@ function Profile() {
   }
   return (
     <div className='profilePage'>
-      {ouser.privacy === "private" && ouser.blockedUsername?.includes(aplan) ? (
+      {ouser.privacy === "private" || ouser.blockedUsername?.includes(aplan) ? (
         <h2>This user's profile is private</h2>
       ) : (
         <MainProfile user={ouser} />
