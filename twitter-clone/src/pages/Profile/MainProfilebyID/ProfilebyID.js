@@ -2,10 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import '../../pages.css';
 import MainProfile from './MainProfile';
+import useLoggedInUser from '../../../hooks/useLoggedInUser';
 
 function Profile() {
   const { userId } = useParams();
   const [user, setUser] = useState("");
+    const [loggedInUser] = useLoggedInUser();
+
 
 //   useEffect(() => {
 //     fetch(`/user/${userId}`)
@@ -29,17 +32,29 @@ useEffect(() => {
   }, [userId]);
 
 
-
+console.log(loggedInUser);
 
   return (
-    <div className='profilePage'>
-    {user?.privacy === "public" ? (
-      <MainProfile user={user} />
+//     <div className='profilePage'>
+//     {user?.privacy === "public" ? (
+//       <MainProfile user={user} />
+//     ) : (
+//       <h2>The account is Private</h2>
+//     )}
+//   </div>
+<div className='profilePage'>
+{loggedInUser?.username.includes(user?.blockedUsername) ? (
+  <div>This user's profile is private</div>
+) : (
+  <div>
+    {user?.privacy === 'public' ? (
+      <MainProfile user={loggedInUser} />
     ) : (
-      <h2>The account is Private</h2>
+      <div>Loading...</div>
     )}
   </div>
-  
+)}
+</div>
   );
 }
 

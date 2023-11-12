@@ -78,9 +78,19 @@ export default function EditProfile({ user, loggedInUser }) {
   const [website, setWebsite] = React.useState("");
   const [open, setOpen] = React.useState(false);
   const [dob, setDob] = React.useState("");
-  const [blockedUsername, setBlockedUsername] = React.useState('');
+  const [blockedUsername, setBlockedUsername] = React.useState("");
+  const [showBlockedUsersModal, setShowBlockedUsersModal] =
+    React.useState(false);
 
+  const handleShowBlockedUsers = (e) => {
+    e.preventDefault();
+    setShowBlockedUsersModal(true);
+  };
 
+  const handleCloseBlockedUsersModal = (e) => {
+    e.preventDefault();
+    setShowBlockedUsersModal(false);
+  };
 
   const HandleSave = () => {
     const editedInfo = {
@@ -114,11 +124,23 @@ export default function EditProfile({ user, loggedInUser }) {
     setBlockedUsername(e.target.value);
   };
 
-  const handleAddBlockedUsername = () => {
-    loggedInUser((prevUser) => ({
-      ...prevUser,
-      blockedUsernames: [...prevUser.blockedUsernames, blockedUsername.trim()],
-    }));
+  const handleAddBlockedUsername = (e) => {
+    e.preventDefault();
+    const newBlockedUsername = [
+      ...loggedInUser[0]?.blockedUsername,
+      blockedUsername,
+    ];
+    fetch(`http://localhost:5000/userUpdates/${user?.email}`, {
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify({ blockedUsername: newBlockedUsername }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("done", data);
+      });
     setBlockedUsername("");
   };
 
@@ -186,13 +208,40 @@ export default function EditProfile({ user, loggedInUser }) {
               label="Blocked Usernames"
               id="blockedUsernames"
               variant="filled"
-              value={loggedInUser.blockedUsernames.join(", ")}
+              value={blockedUsername}
               // Assuming you want to update the blocked usernames on each change
               onChange={handleBlockedUsernameChange}
             />
             <button onClick={handleAddBlockedUsername}>
               Add Blocked Username
             </button>
+
+            <button onClick={handleShowBlockedUsers} >
+              Show Blocked Users
+            </button>
+            <Modal
+              open={showBlockedUsersModal}
+              onClose={handleCloseBlockedUsersModal}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Box sx={style} className="modal">
+                <div className="header">
+                  <IconButton
+                    onClick={handleCloseBlockedUsersModal}
+                  >
+                    <CloseIcon />
+                  </IconButton>
+                  <h2> Blocked Users</h2>
+                </div>
+                <div className="blocked-users-list">
+                  {loggedInUser[0]?.blockedUsername.map((username) => (
+                    <p>{username}</p>
+                  ))}
+                </div>
+              </Box>
+            </Modal>
+
             <TextField
               className="text-field"
               fullWidth
@@ -200,8 +249,6 @@ export default function EditProfile({ user, loggedInUser }) {
               id="fullWidth"
               variant="filled"
               value={privacy}
-              // Assuming you want to update the privacy on each change
-              // If you want to update it on a different event, change the event accordingly
               onChange={(e) => setPrivacy(e.target.value)}
             />
             <Switch

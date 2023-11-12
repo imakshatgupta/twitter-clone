@@ -31,6 +31,7 @@ const Signup = () => {
                 time : 0, 
                 badge : false,
                 privacy : "public",
+                blockedUsername : [],   
             }
 
             fetch('http://localhost:5000/register', {
