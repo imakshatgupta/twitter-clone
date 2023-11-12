@@ -15,6 +15,7 @@ import Profile from "./pages/Profile/Profile";
 import More from "./pages/More/More";
 import Notifications from "./pages/Notifications/Notifications";
 import Premium from "./pages/Premium/Premium";
+import ProfilebyID from "./pages/Profile/MainProfilebyID/ProfilebyID";
 import Badge from "./pages/Badge/Badge.js";
 
 function App() {
@@ -41,6 +42,7 @@ function App() {
             <Route path="badge" element={<Badge />} />
 
             <Route path="profile" element={<Profile />} />
+            <Route path="profile/:userId" element={<ProfilebyID />} />
             <Route path="more" element={<More />} />
           </Route>
           <Route path="/login" element={<Login />} />

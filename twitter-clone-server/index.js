@@ -1,13 +1,14 @@
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
 const port = process.env.PORT || 5000;
 const stripe = require("stripe")(
   "sk_test_51O4hY9SAFIUZ4HpWObRqBcH8pMoyVPbcCLpOzNuMKw5Rw4Yv4GZqh8ylqqHrUEkKWPheK1UK04B7A4I3uL6kGorK00soCEj7xH"
 );
 
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors());
+// ({ origin: "http://localhost:3000" })
 app.use(express.json());
 
 const uri = `mongodb+srv://akshatgtc:Akshat123@cluster0.2zu3863.mongodb.net/?retryWrites=true&w=majority`;
@@ -29,11 +30,39 @@ async function run() {
       const user = await userCollection.find().toArray();
       res.send(user);
     });
+
+    // app.get("/user/:userId", async (req, res) => {
+    //   const userId = req.params.userId;
+
+    //   try {
+    //     const user = await userCollection
+    //       .find({ _id: ObjectId(userId) })
+    //       .toArray();
+    //     if (user.length === 0) {
+    //       res.status(404).json({ error: "User not found" });
+    //     } else {
+    //       res.json(user);
+    //     }
+    //   } catch (error) {
+    //     console.error("Error fetching user data:", error);
+    //     res.status(500).json({ error: "Internal Server Error" });
+    //   }
+    // });
+
     app.get("/loggedInUser", async (req, res) => {
       const email = req.query.email;
       const user = await userCollection.find({ email: email }).toArray();
       res.send(user);
     });
+
+    app.get("/profile", async (req, res) => {
+      const userId = req.query.userId;
+      const user = await userCollection
+        .find({ _id: ObjectId(userId) })
+        .toArray();
+      res.send(user);
+    });
+
     app.get("/post", async (req, res) => {
       const post = (await postCollection.find().toArray()).reverse();
       res.send(post);
@@ -130,13 +159,12 @@ async function run() {
           success_url: "http://localhost:3000/",
           cancel_url: "http://localhost:3000/failure",
         });
-        
+
         res.json({ url: session.url });
       } catch (error) {
         console.log(error);
       }
     });
-
 
     // patch
     app.patch("/userUpdates/:email", async (req, res) => {

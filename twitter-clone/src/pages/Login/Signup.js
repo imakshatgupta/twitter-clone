@@ -30,6 +30,7 @@ const Signup = () => {
                 loginAttempts: "0",  
                 time : 0, 
                 badge : false,
+                privacy : "public",
             }
 
             fetch('http://localhost:5000/register', {

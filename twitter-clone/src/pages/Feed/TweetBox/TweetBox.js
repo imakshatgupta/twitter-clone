@@ -11,6 +11,7 @@ function TweetBox() {
     const [imageURL, setImageURL] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [name, setName] = useState('');
+    const [objectId, setObjectId] = useState('');
     const [username, setUsername] = useState(' ');
     const [buy, setBuy] = useState(' ');
     const [loggedInUser] = useLoggedInUser();
@@ -51,12 +52,15 @@ function TweetBox() {
                     setName(data[0]?.name)
                     setUsername(data[0]?.username)
                     setBuy(data[0]?.plan)
+                    setObjectId(data[0]?._id)
                 })
         }
         else {
             setName(user?.displayName)
             setUsername(email?.split('@')[0])
         }
+
+
 
         if (name) {
             const userPost = {
@@ -66,6 +70,7 @@ function TweetBox() {
                 username: username,
                 name: name,
                 email: email,
+                userid: objectId,
                 date: new Date().toISOString().split('T')[0],
             }
             console.log(userPost);
