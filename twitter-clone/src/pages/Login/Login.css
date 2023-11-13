@@ -50,6 +50,9 @@ h3 {
 .image-container {
     flex: 2;
     margin-left: -100px;
+    width: 100%;
+    vertical-align: text-bottom;
+    display: flex;
 
 
 }
@@ -163,7 +166,7 @@ input {
     .image-container {
         width: 100%;
         vertical-align: text-bottom;
-        display: flex;
+        display: none;
         flex-direction: column-reverse;
         order: 1;
         max-width: 100%;

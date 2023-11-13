@@ -16,8 +16,9 @@ const style = {
   top: "50%",
   left: "50%",
   transform: "translate(-50%, -50%)",
-  width: 600,
-  height: 600,
+  width: "90%", // Set width to a percentage for responsiveness
+  maxWidth: 400, // Set a maximum width to avoid overly wide modals on large screens
+  height: "90%", // Set height to auto for dynamic content
   bgcolor: "background.paper",
   boxShadow: 24,
   borderRadius: 8,
@@ -46,7 +47,7 @@ function EditChild({ dob, setDob }) {
         aria-describedby="child-modal-description"
         className="mod"
       >
-        <Box sx={{ ...style, width: 300, height: 300 }}>
+        <Box sx={{ ...style, width: "90%", maxWidth:400 }}>
           <div className="text">
             <h2>Edit date of birth?</h2>
             <p>
@@ -126,10 +127,11 @@ export default function EditProfile({ user, loggedInUser }) {
 
   const handleAddBlockedUsername = (e) => {
     e.preventDefault();
-    const newBlockedUsername = [
-      ...loggedInUser[0]?.blockedUsername,
-      blockedUsername,
-    ];
+    const existingBlockedUsernames = Array.isArray(loggedInUser[0]?.blockedUsername)
+    ? loggedInUser[0]?.blockedUsername
+    : [];
+    const newBlockedUsername = [...existingBlockedUsernames, blockedUsername];
+
     fetch(`http://localhost:5000/userUpdates/${user?.email}`, {
       method: "PATCH",
       headers: {
@@ -216,9 +218,7 @@ export default function EditProfile({ user, loggedInUser }) {
               Add Blocked Username
             </button>
 
-            <button onClick={handleShowBlockedUsers} >
-              Show Blocked Users
-            </button>
+            <button onClick={handleShowBlockedUsers}>Show Blocked Users</button>
             <Modal
               open={showBlockedUsersModal}
               onClose={handleCloseBlockedUsersModal}
@@ -227,17 +227,16 @@ export default function EditProfile({ user, loggedInUser }) {
             >
               <Box sx={style} className="modal">
                 <div className="header">
-                  <IconButton
-                    onClick={handleCloseBlockedUsersModal}
-                  >
+                  <IconButton onClick={handleCloseBlockedUsersModal}>
                     <CloseIcon />
                   </IconButton>
                   <h2> Blocked Users</h2>
                 </div>
                 <div className="blocked-users-list">
-                  {loggedInUser[0]?.blockedUsername.map((username) => (
-                    <p>{username}</p>
-                  ))}
+                  { loggedInUser[0]?.blockedUsername &&
+                     loggedInUser[0]?.blockedUsername.map((username) => (
+                      <p key={username}>{username}</p>
+                    ))}
                 </div>
               </Box>
             </Modal>
