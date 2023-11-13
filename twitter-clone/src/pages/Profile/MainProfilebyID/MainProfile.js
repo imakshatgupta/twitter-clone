@@ -27,8 +27,8 @@ const MainProfile = ({ user }) => {
 
   return (
     <div className='sys'>
-      <ArrowBackIcon className='arrow-icon' onClick={() => navigate('/')} />
-      <h4 className='heading-4'> Profile </h4>
+      {/* <ArrowBackIcon className='arrow-icon' onClick={() => navigate('/')} /> */}
+      {/* <h4 className='heading-4'> Profile </h4> */}
       <div className='mainprofile' >
         <div className='profile-bio'>
           {

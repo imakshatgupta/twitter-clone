@@ -70,8 +70,11 @@ const Badge = () => {
       (<h2>You Already have a Verification Badge</h2>)
        : 
        (<>
-       <h2>Apply for Verification Badge</h2>
       <form className='form' onSubmit={handleSubmit}>
+       <h2>Apply for Verification Badge</h2>
+       <br/>
+       <br/>
+        <br/>
         <div className="form-group">
           <label htmlFor="fullName">Full Name:</label>
           <input

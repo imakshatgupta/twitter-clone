@@ -1,8 +1,23 @@
 .feed {
   flex: 0.4;
   border-right: 1px solid var(--twitter-background);
-  min-width: fit-content;
-  overflow-y: scroll;
+  width: 100vw;
+  padding: 0 180px;
+  height: 100vh;
+  /* display: flex; */
+  align-items: center;
+}
+
+@media screen and (max-width: 1200px) {
+  .feed {
+    padding: 0 80px; /* Adjust padding for smaller screens */
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .feed {
+    padding: 0 20px; /* Adjust padding for even smaller screens */
+  }
 }
 
 .feed::-webkit-scrollbar {

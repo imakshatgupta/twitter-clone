@@ -1,9 +1,24 @@
 .subscriptions-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin: 20px;
+  flex: 0.4;
+  border-right: 1px solid var(--twitter-background);
+  width: 100vw;
+  padding: 0 180px;
+  height: 100vh;
+  /* display: flex; */
+  align-items: center;
+}
+
+@media screen and (max-width: 1200px) {
+  .subscriptions-container {
+    padding: 0 80px; /* Adjust padding for smaller screens */
   }
+}
+
+@media screen and (max-width: 768px) {
+  .subscriptions-container {
+    padding: 0 20px; /* Adjust padding for even smaller screens */
+  }
+}
   
   .plan-card {
     border: 1px solid #ccc;

@@ -1,6 +1,26 @@
-  .sys{
-    display: inline;
+.sys {
+  display: flex;
+  margin-bottom: 70%;
+  margin-right: 40px;
+}
+
+.mainprofile {
+  background-color: rgb(207, 206, 206);
+  margin-bottom: 20%;
+  border: 1px solid white;
+}
+
+@media screen and (max-width: 768px) {
+  .sys {
+    flex-direction: column; /* Change flex direction to column on smaller screens */
+    margin-right: 10px; /* Remove right margin on smaller screens */
   }
+
+  .mainprofile {
+    margin-bottom: 10%; /* Adjust margin on smaller screens */
+  }
+}
+
   
   .arrow-icon {
     margin: 10px;
@@ -77,11 +97,7 @@
     color: darkgrey;
   }
 
-  .mainprofile {
-    background-color: rgb(207, 206, 206);
-    margin-top: 0;
-    border: 1 px solid white;
-  }
+  
 
   .profile-bio {
     height: 100px;

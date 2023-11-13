@@ -109,8 +109,8 @@ const MainProfile = ({ user }) => {
 
   return (
     <div className='sys'>
-      <ArrowBackIcon className='arrow-icon' onClick={() => navigate('/')} />
-      <h4 className='heading-4'>{username}</h4>
+      {/* <ArrowBackIcon className='arrow-icon' onClick={() => navigate('/')} /> */}
+      {/* <h4 className='heading-4'>{username}</h4> */}
       <div className='mainprofile' >
         {/* <h1 className='heading-1' style={{ color: "white" }}>Building of profile page Tweets </h1> */}
         <div className='profile-bio'>

@@ -41,7 +41,7 @@ function Profile() {
 
   // Check if data is loaded and handle conditional rendering
   if (!aplan || !ouser) {
-    return <div>Loading...</div>; // You can replace this with a loading indicator
+    return <h2 className='profilePage'>Loading...</h2>; // You can replace this with a loading indicator
   }
   return (
     <div className='profilePage'>
